@@ -1,23 +1,23 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
+import { Stage, Sprite } from '@inlet/react-pixi';
+import MainMenu from './MainMenu';
 
-function App() {
+const App = () => {
+  const [renderSplash, setRenderSplash] = useState<boolean>(true);
+
+  setTimeout(() => {
+    setRenderSplash(false);
+  }, 2000)
+
+  const renderScreen = () => {
+    renderSplash ? <Sprite image="./assets/splash.jpg" /> : <MainMenu />
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <Stage width={800} height={600}>
+        {renderScreen()}
+    </Stage>
     </div>
   );
 }
