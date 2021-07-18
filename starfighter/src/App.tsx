@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Stage, Sprite } from '@inlet/react-pixi';
 import MainMenu from './MainMenu';
+import splash from './assets/splash.png';
 
 const App = () => {
   const [renderSplash, setRenderSplash] = useState<boolean>(true);
@@ -10,7 +11,7 @@ const App = () => {
   }, 2000)
 
   const renderScreen = () => {
-    renderSplash ? <Sprite image="./assets/splash.jpg" /> : <MainMenu />
+    return renderSplash ? <Sprite scale={{ x: 1.5 , y: 1.5}} position={[0, 0]} image={splash} /> : <MainMenu />
   }
 
   return (
