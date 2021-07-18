@@ -1,21 +1,20 @@
 import React from 'react';
-import { Container, Sprite, Text } from '@inlet/react-pixi';
+import { Container, Sprite } from '@inlet/react-pixi';
 import logo from './assets/logo.png';
+import background from './assets/menubg.jpg';
 import Meteorit from './components/Meteroid';
 import MenuButton from './components/MenuButton';
 
-const MainMenu = () => {
+export interface MenuProps {
+    startGame: () => void;
+    exitGame: () => void;
+}
 
-    const startGame = () => {
-        console.log('start game');
-    }
-
-    const renderThankYou = () => {
-        console.log('Thank you');
-    }
-
+const MainMenu = ({startGame, exitGame }: MenuProps) => {
     return (
         <Container>
+            <Sprite scale={{ x: 1.5, y: 1.5 }} position={[0, 0]} image={background} />
+            <Meteorit />
             <Meteorit />
             <Meteorit />
             <Sprite image={logo} x={100} y={100} scale={{ x: 3, y: 3 }} position={[300, 10]} />
@@ -38,7 +37,7 @@ const MainMenu = () => {
                 text="EXIT"
                 positionX={300}
                 positionY={400}
-                onClick={renderThankYou} />
+                onClick={exitGame} />
         </Container>
     )
 

@@ -1,17 +1,25 @@
 import React, { useState } from 'react';
-import { Stage, Sprite } from '@inlet/react-pixi';
+import { Stage } from '@inlet/react-pixi';
 import MainMenu from './MainMenu';
-import splash from './assets/splash.png';
+import Splash from './components/Splash';
 
 const App = () => {
   const [renderSplash, setRenderSplash] = useState<boolean>(true);
 
-  setTimeout(() => {
+  const splashComplete = () => {
     setRenderSplash(false);
-  }, 2000)
+  }
+
+  const startGame = () => {
+    console.log('start game');
+  }
+
+  const exitGame = () => {
+    console.log('exit');
+  }
 
   const renderScreen = () => {
-    return renderSplash ? <Sprite scale={{ x: 1.5 , y: 1.5}} position={[0, 0]} image={splash} /> : <MainMenu />
+    return renderSplash ? <Splash onComplete={splashComplete} /> : <MainMenu startGame={startGame} exitGame={exitGame}/>
   }
 
   return (

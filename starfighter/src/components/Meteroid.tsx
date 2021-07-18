@@ -16,6 +16,7 @@ const maxW = 799;
 const maxH = 599;
 
 const Meteorit = () => {
+    const speed = getRandomMax(3);
     const [motion, update] = useState<MeteoritProps>({x: getRandomMax(maxW), y: getRandomMax(maxH), rotation: 0.1});
     useTick((delta) => {
       let rotation;
@@ -27,7 +28,7 @@ const Meteorit = () => {
       } else {
         update({
           x: motion.x,
-          y: motion.y+1,
+          y: motion.y+speed,
           rotation: rotation,
         })
       }
@@ -36,7 +37,7 @@ const Meteorit = () => {
       <Sprite
         image={meteor}
         anchor={0.5}
-        scale={{ x: 2, y: 2}}
+        scale={{ x: 0.7, y: 0.7}}
         {...motion}
       />
     )
