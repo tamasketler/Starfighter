@@ -1,9 +1,9 @@
 import React from 'react';
 import { Container, Sprite } from '@inlet/react-pixi';
-import logo from './assets/logo.png';
-import background from './assets/menubg.jpg';
-import Meteorit from './components/Meteroid';
-import MenuButton from './components/MenuButton';
+import logo from '../assets/logo.png';
+import background from '../assets/menubg.jpg';
+import Meteorit from '../components/Meteroid';
+import MenuButton from '../components/MenuButton';
 
 export interface MenuProps {
     startGame: () => void;
