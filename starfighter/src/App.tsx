@@ -6,12 +6,12 @@ import GameController from './screens/GameController';
 
 const App = () => {
   const splashComplete = () => {
-    setElements([<MainMenu startGame={startGame} exitGame={exitGame}/>])
+    setScreen(<MainMenu startGame={startGame} exitGame={exitGame}/>)
   }
-  const [elements, setElements] = useState<JSX.Element[]>([<Splash onComplete={splashComplete} />]);
+  const [screen, setScreen] = useState<JSX.Element>(<Splash onComplete={splashComplete} />);
   
   const startGame = () => {
-    setElements([<GameController />])
+    setScreen(<GameController endGame={splashComplete} />)
   }
 
   const exitGame = () => {
@@ -21,8 +21,8 @@ const App = () => {
   return (
     <div className="App">
       <Stage width={800} height={600}>
-        {elements}
-    </Stage>
+        {screen}
+      </Stage>
     </div>
   );
 }
