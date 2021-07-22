@@ -5,7 +5,8 @@ import Enemy from '../components/Enemy';
 import Background from '../components/ParallaxBackground';
 import Player, { PlayerProps } from '../components/Player';
 import Missile from '../components/Projectile';
-import * as PIXI from 'pixi.js';
+import Explosion from '../components/Explosion';
+//import Bump from 'pixi-plugin-bump';
 
 type KeyStates = {
     up: boolean;
@@ -28,59 +29,10 @@ const GameController = ({ endGame }: ControllerProps) => {
     const [player, setPlayer] = useState<PlayerProps>({x: 50, y: 295});
     const [projectiles, setProjectiles] = useState<JSX.Element[]>([]);
     const [enemies, setEnemies] = useState<JSX.Element[]>([]);
+    const [explosions, setExplosions] = useState<JSX.Element[]>([]);
+    //const bump = new Bump();
 
     const playerShip = <Player {...player}/>;
-
-    const hitTestRectangle = (r1:any, r2:any) => {
-
-        //Define the variables we'll need to calculate
-        let hit, combinedHalfWidths, combinedHalfHeights, vx, vy;
-      
-        //hit will determine whether there's a collision
-        hit = false;
-      
-        //Find the center points of each sprite
-        r1.centerX = r1.x + r1.width / 2;
-        r1.centerY = r1.y + r1.height / 2;
-        r2.centerX = r2.x + r2.width / 2;
-        r2.centerY = r2.y + r2.height / 2;
-      
-        //Find the half-widths and half-heights of each sprite
-        r1.halfWidth = r1.width / 2;
-        r1.halfHeight = r1.height / 2;
-        r2.halfWidth = r2.width / 2;
-        r2.halfHeight = r2.height / 2;
-      
-        //Calculate the distance vector between the sprites
-        vx = r1.centerX - r2.centerX;
-        vy = r1.centerY - r2.centerY;
-      
-        //Figure out the combined half-widths and half-heights
-        combinedHalfWidths = r1.halfWidth + r2.halfWidth;
-        combinedHalfHeights = r1.halfHeight + r2.halfHeight;
-      
-        //Check for a collision on the x axis
-        if (Math.abs(vx) < combinedHalfWidths) {
-      
-          //A collision might be occurring. Check for a collision on the y axis
-          if (Math.abs(vy) < combinedHalfHeights) {
-      
-            //There's definitely a collision happening
-            hit = true;
-          } else {
-      
-            //There's no collision on the y axis
-            hit = false;
-          }
-        } else {
-      
-          //There's no collision on the x axis
-          hit = false;
-        }
-      
-        //`hit` will be either `true` or `false`
-        return hit;
-      };
 
     const renderMissile = () => {
         return <Missile key={idCounter} startX={player.x} startY={player.y} />;
@@ -90,20 +42,60 @@ const GameController = ({ endGame }: ControllerProps) => {
         return <Enemy key={enemyCounter} />;
     }
 
-    const testEnemyHit = () => {
-        console.log('')
+    const renderExplosion = (x: number | undefined, y: number | undefined) => {
+        return x !== undefined && y !== undefined ? <Explosion key={enemyCounter} x={x} y={y} /> : <div/>
     }
 
-    const testPlayerHit = () => {
-        enemies.forEach(enemy => {
-            if (hitTestRectangle(playerShip, enemy)) {
-                endGame()
-            }
-        })
+    const destroyEnemy = (enemy: JSX.Element) => {
+        const destroyable = enemy as _ReactPixi.ISprite;
+        setEnemies(enemies.filter(item => item.key !== enemy.key));
+        setExplosions(explosions.concat(renderExplosion(destroyable.x, destroyable.y)));
     }
+
+    // Collosion is not working unfortunately because of package versions
+
+    // const rectsIntersect = (a:_ReactPixi.ISprite, b:_ReactPixi.ISprite) => {
+    //     const aBox = a._bounds?.getRectangle();
+    //     const bBox = b._bounds?.getRectangle();
+
+    //     if (aBox !== undefined && bBox !== undefined) {
+    //         return aBox.x + aBox.width > bBox.x &&
+    //             aBox.x < bBox.x + bBox.width &&
+    //             aBox.y + aBox.height > bBox.y &&
+    //             aBox.y < bBox.y + bBox.height;
+    //     }
+    //     else {
+    //         throw new Error('intersect error');
+    //     }
+    // }
+
+    // const hit = (a: JSX.Element, b:JSX.Element[]) => {
+    //     const main = a as _ReactPixi.ISprite;
+    //     b.forEach(item => {
+    //         if (bump.hitTestRectangle(main, item as _ReactPixi.ISprite, true)){
+    //             return true;
+    //         }
+    //     });
+    //     return false;
+    // }
+
+    // const testEnemyHit = () => {
+    //     enemies.forEach(enemy => {
+    //         if (hit(enemy, projectiles)) {
+    //             destroyEnemy(enemy);
+    //         }
+    //     })
+    // }
+
+    // const testPlayerHit = () => {
+    //     if (hit(playerShip, enemies)) {
+    //         endGame();
+    //     }
+    // }
 
     useTick(() => {
-        testPlayerHit();
+        // testPlayerHit();
+        // testEnemyHit();
 
         if (enemyCounter % 200 === 0) {
             setEnemies(enemies.concat(renderEnemy()));

@@ -9,7 +9,7 @@ export interface MotionProps {
 
 const getRandomMax = (max: number) => {
     return Math.floor(Math.random() * max) + 1;
-  }
+}
 
 const Enemy = () => {
     const [isVisible, setVisible] = useState<boolean>(true);
@@ -28,7 +28,7 @@ const Enemy = () => {
       }
     })
     return (
-         <Sprite  visible={isVisible} zIndex={1} image={enemy} scale={{ x: 0.8, y: 0.8}} {...motion} />
+         <Sprite visible={isVisible} zIndex={1} image={enemy} scale={{ x: 0.8, y: 0.8}} {...motion} />
     )
   }
 
